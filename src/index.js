@@ -54,6 +54,23 @@ app.get("/api/pokemons", (req, res) => {
   });
 });
 
+// GET pokemon by id
+app.get("/api/pokemons/:id", (req, res) => {
+  var pokemonChoosen;
+  pokemonsList.forEach(pokemon => {
+    if (pokemon.id == req.params.id){
+      pokemonChoosen = pokemon;
+    };
+  });
+  if (pokemonChoosen == null) {
+    res.status(404).send("Pokemon with id " + req.params.id + " not found");
+    return
+  } else {
+    res.status(200).send(pokemonChoosen);
+    return
+  }
+});
+
 app.get("/", (req, res) => {
   res.send("bienvenue sur l'API Pokémon");
 });
