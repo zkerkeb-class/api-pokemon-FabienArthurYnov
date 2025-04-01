@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
+import {saveToFile} from "./utils/writer.js";
 
 dotenv.config();
 
@@ -56,20 +57,35 @@ app.get("/api/pokemons", (req, res) => {
 
 // GET pokemon by id
 app.get("/api/pokemons/:id", (req, res) => {
-  var pokemonChoosen;
+  const pokemonChoosen = null;
   pokemonsList.forEach(pokemon => {
-    if (pokemon.id == req.params.id){
+    if (pokemon.id === req.params.id){
       pokemonChoosen = pokemon;
     };
   });
-  if (pokemonChoosen == null) {
+  if (pokemonChoosen === null) {
     res.status(404).send("Pokemon with id " + req.params.id + " not found");
-    return
+    return;
   } else {
     res.status(200).send(pokemonChoosen);
-    return
+    return;
   }
 });
+
+// delete pokemon by id
+app.delete("/api/pokemons/:id", (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const newPokemonsList = pokemonsList.filter(pokemon => pokemon.id !== id);
+
+  if (newPokemonsList.length === pokemonsList.length) {
+    res.status(404).send("Pokemon with id " + req.params.id + " not found");
+    return;
+  } else {
+    saveToFile(path.join(__dirname, './data/pokemons.json'), newPokemonsList);
+    res.status(202).send("Pokemon with id " + req.params.id + " successfully deleted");
+    return;
+  }
+})
 
 app.get("/", (req, res) => {
   res.send("bienvenue sur l'API Pokémon");
