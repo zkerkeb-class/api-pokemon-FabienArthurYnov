@@ -119,6 +119,50 @@ app.post("/api/pokemons", (req, res) => {
   res.status(201).send(`Pokémon with ID ${newPokemon.id} successfully created`);
 });
 
+// update pokemon
+app.put("/api/pokemons/:id", (req, res) => {
+  const id = parseInt(req.params.id, 10); // Convert ID to number
+  const updatedData = req.body;
+
+  // Find the Pokémon by ID
+  const pokemonIndex = pokemonsList.findIndex(pokemon => pokemon.id === id);
+  
+  if (pokemonIndex === -1) {
+      res.status(404).send(`Pokemon with ID ${id} not found`);
+      return;
+  }
+
+  // Validate update Data
+  if (updatedData.id && updatedData.id !== id) {
+    res.status(400).send("Cannot change Pokémon ID");
+    return;
+  }
+  if (updatedData.types && (!Array.isArray(updatedData.types) || !updatedData.types.every(type => all_types.includes(type)))) {
+    res.status(400).send("Invalid Pokémon types");
+    return;
+  }
+  if (updatedData.base) {
+    const baseStats = ["HP", "Attack", "Defense", "Sp. Attack", "Sp. Defense", "Speed"];
+    for (const stat of baseStats) {
+        if (updatedData.base[stat] && typeof updatedData.base[stat] !== "number") {
+            res.status(400).send(`Invalid base ${stat}`);
+            return;
+        }
+    }
+  }
+  
+  // Merge new data with the existing one
+  pokemonsList[pokemonIndex] = {
+    ...pokemonsList[pokemonIndex],  // Keep existing data
+    ...updatedData                   // Override with new data
+  };
+
+  // Save the updated list to file
+  const filePath = path.join(__dirname, './data/pokemons.json');
+  saveToFile(filePath, pokemonsList);
+
+  res.status(200).send(`Pokemon with ID ${id} successfully updated`);
+});
 
 // delete pokemon by id
 app.delete("/api/pokemons/:id", (req, res) => {

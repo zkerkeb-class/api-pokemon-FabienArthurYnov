@@ -110,21 +110,19 @@
   {
     "id": 7,
     "name": {
-      "english": "Squirtle",
-      "japanese": "ゼニガメ",
-      "chinese": "杰尼龟",
-      "french": "Carapuce"
+      "english": "Ivysaur",
+      "french": "Test"
     },
     "type": [
       "Water"
     ],
     "base": {
-      "HP": 44,
-      "Attack": 48,
-      "Defense": 65,
-      "Sp. Attack": 50,
-      "Sp. Defense": 64,
-      "Speed": 43
+      "HP": 60,
+      "Attack": 62,
+      "Defense": 63,
+      "Sp. Attack": 80,
+      "Sp. Defense": 80,
+      "Speed": 60
     },
     "image": "http://localhost:3000/assets/pokemons/7.png"
   },
