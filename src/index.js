@@ -125,7 +125,9 @@ app.post("/api/login", (req, res) => {
   const loginForm = req.body;
   const secretKey = "²";
   const token = jwt.sign(
-    {login: loginForm.login},
+    {login: loginForm.login,
+    password: loginForm.password
+    },
     secretKey,
     {expiresIn: '1h' }
   );
