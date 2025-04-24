@@ -123,7 +123,7 @@ app.post("/api/pokemons", (req, res) => {
 
 app.post("/api/login", (req, res) => {
   const loginForm = req.body;
-  const secretKey = "aSecretKey";
+  const secretKey = "²";
   const token = jwt.sign(
     {login: loginForm.login},
     secretKey,
