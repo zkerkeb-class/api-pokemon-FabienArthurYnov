@@ -5,6 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import {saveToFile} from "./utils/writer.js";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -118,6 +119,19 @@ app.post("/api/pokemons", (req, res) => {
 
   res.status(201).send(`Pokémon with ID ${newPokemon.id} successfully created`);
 });
+
+
+app.post("/api/login", (req, res) => {
+  const loginForm = req.body;
+  const secretKey = "aSecretKey";
+  const token = jwt.sign(
+    {login: loginForm.login},
+    secretKey,
+    {expiresIn: '1h' }
+  );
+
+  res.status(200).send(token);
+})
 
 // update pokemon
 app.put("/api/pokemons/:id", (req, res) => {
